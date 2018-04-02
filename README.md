@@ -23,6 +23,7 @@ $ node index
 
 * [Vuetify](https://vuetifyjs.com/) - Material design component collection used
 * [Annyang](https://github.com/TalAter/annyang) - Voice recognition used
+* [JavaScript OCR](http://tesseract.projectnaptha.com/) - pure Javascript port of the popular Tesseract OCR engine.
 * [Twitter for Node.js](https://github.com/desmondmorris/node-twitter) - An asynchronous client library for the Twitter REST and Streaming API's.
 
 ## Acknowledgments
