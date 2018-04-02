@@ -46,7 +46,7 @@
 			<v-container fluid fill-height>
 				<v-layout justify-center>
 					<v-flex xs12 sm8 md4>
-						<v-card hover class="tweet-card" v-for="l in list" :key="l.id" tile>
+						<v-card hover class="tweet-card" v-for="(l, index) in list" :key="l.index" tile>
 							<v-card-text>
 								<div class="text-xs-left subheading mb-2">
 									<v-layout row wrap>

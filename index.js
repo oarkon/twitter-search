@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const Twitter = require('twitter');
 const app = express();
 
@@ -9,6 +10,7 @@ const client = new Twitter({
   access_token_secret: ''
 });
 
+app.use(cors());
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {

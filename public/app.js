@@ -45,7 +45,7 @@ new Vue({
 				this.currentMaxId = null
 			this.list.length = 0
 			this.$refs.topProgress.start()
-			fetch(`/statuses?q=${this.search}`)
+			fetch(`http://139.59.105.62:3535/statuses?q=${this.search}`)
 			.then((res) => res.json())
 			.then((data) => {
 				this.introMsg = (data.statuses.length > 0) ? false : true
@@ -70,7 +70,7 @@ new Vue({
 		},
 		loadMore ($state) {
 			this.$refs.topProgress.start()
-			fetch(`/statuses?q=${this.search}&max_id=${this.currentMaxId}`)
+			fetch(`http://139.59.105.62:3535/statuses?q=${this.search}&max_id=${this.currentMaxId}`)
 			.then((res) => res.json())
 			.then((data) => {
 				this.introMsg = (data.statuses.length > 0) ? false : true
