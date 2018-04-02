@@ -14,9 +14,6 @@ $ npm install
 
 # run app
 $ node index
-
-# run app
-$ node index
 ```
 
 ## Built With
