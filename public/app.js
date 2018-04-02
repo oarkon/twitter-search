@@ -35,7 +35,8 @@ new Vue({
 		image: {},
 		loading: false,
 		extractedText: null,
-		sheet: false
+		sheet: false,
+		introMsg: true
 	}),
 	methods: {
 		fetchTweets () {
@@ -46,6 +47,7 @@ new Vue({
 			fetch(`/statuses?q=${this.search}`)
 			.then((res) => res.json())
 			.then((data) => {
+				this.introMsg = (data.statuses.length > 0) ? false : true
 				this.$refs.topProgress.done()
 				if (data.search_metadata.hasOwnProperty('next_results')) {
 					this.currentMaxId = getParameterByName('max_id', data.search_metadata.next_results)
@@ -70,6 +72,7 @@ new Vue({
 			fetch(`/statuses?q=${this.search}&max_id=${this.currentMaxId}`)
 			.then((res) => res.json())
 			.then((data) => {
+				this.introMsg = (data.statuses.length > 0) ? false : true
 				this.$refs.topProgress.done()
 				if (data.search_metadata.hasOwnProperty('next_results')) {
 					this.currentMaxId = getParameterByName('max_id', data.search_metadata.next_results)

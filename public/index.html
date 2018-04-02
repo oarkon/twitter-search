@@ -36,6 +36,9 @@
 			</v-btn>
 		</v-toolbar>
 		<v-content>
+			<div class="text-xs-center pt-4" v-show="introMsg">
+				<h1 class="grey--text text--darken-1">Type anything and click enter</h1>
+			</div>
 			<v-container fluid fill-height>
 				<v-layout row wrap class="hidden-md-and-up" v-show="showSearch">
 					<v-flex xs10>
