@@ -1,0 +1,21 @@
+.tweet-card {
+	word-wrap: break-word;      /* IE */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-bottom: 10px;
+}
+
+.tweet-text {
+	text-decoration: none;
+}
+
+.thumb {
+	width: 150px;
+	height: 150px;
+}
+
+.img-responsive {
+	max-width: 100% !important;
+	height: auto;
+	display: block;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "twitter-tesseract",
+  "version": "1.0.0",
+  "description": "extracting text in twitter images using tesseract",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "twitter": "^1.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert Soriano",
+  "license": "ISC"
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+	<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	<link rel="stylesheet" href="./css/style.css">
+	<title>Twitter Media Tesseract</title>
+</head>
+<body>
+	<div id="app">
+		<vue-topprogress ref="topProgress" color="#FFF"></vue-topprogress>
+		<v-app>
+			<v-toolbar
+			color="blue darken-3"
+			dark
+			app
+			fixed
+			>
+			<v-toolbar-title style="width: 300px" class="ml-0 pl-3">
+				<span class="hidden-sm-and-down">Twitter status search</span>
+			</v-toolbar-title>
+			<v-text-field
+			class="hidden-xs-and-down"
+			flat
+			solo-inverted
+			prepend-icon="search"
+			label="Search"
+			v-model="search"
+			clearable
+			@keyup.enter="fetchTweets"
+			></v-text-field>
+			<v-spacer></v-spacer>
+			<v-btn icon class="hidden-md-and-up" @click="showSearch = !showSearch">
+				<v-icon>search</v-icon>
+			</v-btn>
+		</v-toolbar>
+		<v-content>
+			<v-container fluid fill-height>
+				<v-layout row wrap class="hidden-md-and-up" v-show="showSearch">
+					<v-flex xs10>
+						<v-text-field prepend-icon="search" label="Search" v-model="search" clearable></v-text-field>
+					</v-flex>
+					<v-flex xs2>
+						<v-btn icon @click="fetchTweets">
+							<v-icon>send</v-icon>
+						</v-btn>
+					</v-flex>
+				</v-layout>
+				<v-layout justify-center>
+					<v-flex xs12 sm8 md4>
+						<v-card class="tweet-card" v-for="l in list" :key="l.id" tile>
+							<v-card-text>
+								<div class="text-xs-left subheading mb-2">
+									<v-layout row wrap>
+										<v-flex xs6>
+											<v-avatar size="40px">
+												<img :src="l.user.profile_image_url" alt="">
+											</v-avatar> &nbsp;{{l.user.name}}
+										</v-flex>
+										<v-flex xs6>
+											<div class="text-xs-right caption grey--text text--darken-1">
+												{{l.created_at | readableDate}}
+											</div>
+										</v-flex>
+									</v-layout>
+								</div>
+								<div class="text-xs-left body-1 grey--text text--darken-2" v-html="l.full_text"></div>
+							</v-card-text>
+							<v-card-actions v-if="l.entities.media">
+								<v-spacer></v-spacer>
+								<v-btn icon @click.native="l.showMedia = !l.showMedia">
+									<v-icon>{{ l.showMedia ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+								</v-btn>
+							</v-card-actions>
+							<v-slide-y-transition v-if="l.entities.media">
+								<v-card-text class="py-0" v-show="l.showMedia">
+									<div class="subheading grey--text text--darken-2">Media:</div>
+									<v-container fluid grid-list-sm class="px-0">
+										<v-flex xs4 v-for="(m, i) in l.entities.media">
+											<img :src="m.media_url" alt="" class="thumb" @click="viewFullImage(m)">
+										</v-flex>
+									</v-container>
+								</v-card-text>
+							</v-slide-y-transition>
+						</v-card>
+						<infinite-loading @infinite="loadMore" v-if="currentMaxId" spinner="waveDots"></infinite-loading>
+					</v-flex>
+				</v-layout>
+			</v-container>
+			<v-dialog scrollable v-model="imageDialog" max-width="600" v-if="image.media_url">
+				<v-card>
+					<!-- <v-card-text class="pa-2">
+						<img :src="image.media_url" :style="{height: `${image.sizes.small.h}px`, height: `${image.sizes.small.w}px`}" :alt="image.media_url">
+					</v-card-text> -->
+					<v-card-media
+					contain
+					:src="image.media_url"
+					:height="`${image.sizes.small.h}px`"
+					></v-card-media>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn :loading="loading" :disabled="loading" depressed @click="extractText" color="blue darken-2" class="white--text">Extract Text</v-btn>
+						<v-btn depressed @click="imageDialog = false" color="grey" class="white--text">
+							Close
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+			<v-bottom-sheet v-model="sheet">
+				<v-card>
+					<v-card-text>
+						<div class="headline" v-html="extractedText"></div>
+					</v-card-text>
+				</v-card>
+			</v-bottom-sheet>
+		</v-content>
+	</v-app>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script src="./js/vue-infinite-loading.js"></script>
+<script src="./js/vue-top-progress.min.js"></script>
+<script defer src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+<script defer src="./js/anchorme.min.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
