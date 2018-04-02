@@ -36,7 +36,8 @@ new Vue({
 		loading: false,
 		extractedText: null,
 		sheet: false,
-		introMsg: true
+		introMsg: true,
+		searchLabel: 'Search'
 	}),
 	methods: {
 		fetchTweets () {
@@ -79,7 +80,6 @@ new Vue({
 				} else {
 					$state.complete();
 				}
-				console.log(data)
 				const list = data.statuses.map((d) => {
 					if (d.hasOwnProperty('retweeted_status')) {
 						d.full_text = `Retweet from @${d.retweeted_status.user.screen_name}:<br>${d.retweeted_status.full_text}`
@@ -116,6 +116,23 @@ new Vue({
 				this.sheet = true
 				this.loading = false
 			})
+		},
+		listen () {
+			annyang.start({debug: true})
+			this.searchLabel = 'Listening...'
+		}
+	},
+	created () {
+		if (annyang) {
+			const commands = {
+				'search (for) *tag': (tag) => {
+					this.search = tag
+					this.fetchTweets()
+					annyang.abort()
+					this.searchLabel = 'Search'
+				}
+			}
+			annyang.addCommands(commands)
 		}
 	},
 	filters: {

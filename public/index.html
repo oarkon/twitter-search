@@ -18,14 +18,15 @@
 			fixed
 			>
 			<v-toolbar-title style="width: 300px" class="ml-0 pl-3">
-				<span class="hidden-sm-and-down">Twitter status search</span>
+				<span class="hidden-sm-and-down">Twitter Status Search</span>
+				<span class="hidden-md-and-up">TSS</span>
 			</v-toolbar-title>
 			<v-text-field
-			class="hidden-xs-and-down"
+			class="hidden-sm-and-down"
 			flat
 			solo-inverted
 			prepend-icon="search"
-			label="Search"
+			:label="searchLabel"
 			v-model="search"
 			clearable
 			@keyup.enter="fetchTweets"
@@ -34,25 +35,18 @@
 			<v-btn icon class="hidden-md-and-up" @click="showSearch = !showSearch">
 				<v-icon>search</v-icon>
 			</v-btn>
+			<v-btn icon @click="listen">
+				<v-icon>mic</v-icon>
+			</v-btn>
 		</v-toolbar>
 		<v-content>
-			<div class="text-xs-center pt-4" v-show="introMsg">
+			<div class="text-xs-center pt-4 hidden-sm-and-down" v-show="introMsg">
 				<h1 class="grey--text text--darken-1">Type anything and click enter</h1>
 			</div>
 			<v-container fluid fill-height>
-				<v-layout row wrap class="hidden-md-and-up" v-show="showSearch">
-					<v-flex xs10>
-						<v-text-field prepend-icon="search" label="Search" v-model="search" clearable></v-text-field>
-					</v-flex>
-					<v-flex xs2>
-						<v-btn icon @click="fetchTweets">
-							<v-icon>send</v-icon>
-						</v-btn>
-					</v-flex>
-				</v-layout>
 				<v-layout justify-center>
 					<v-flex xs12 sm8 md4>
-						<v-card class="tweet-card" v-for="l in list" :key="l.id" tile>
+						<v-card hover class="tweet-card" v-for="l in list" :key="l.id" tile>
 							<v-card-text>
 								<div class="text-xs-left subheading mb-2">
 									<v-layout row wrap>
@@ -80,7 +74,7 @@
 								<v-card-text class="py-0" v-show="l.showMedia">
 									<div class="subheading grey--text text--darken-2">Media:</div>
 									<v-container fluid grid-list-sm class="px-0">
-										<v-flex xs4 v-for="(m, i) in l.entities.media">
+										<v-flex xs4 v-for="(m, i) in l.entities.media" :key="i">
 											<img :src="m.media_url" alt="" class="thumb" @click="viewFullImage(m)">
 										</v-flex>
 									</v-container>
@@ -125,8 +119,9 @@
 <script src="./js/vue-infinite-loading.js"></script>
 <script src="./js/vue-top-progress.min.js"></script>
 <script defer src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 <script defer src="./js/anchorme.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
 <script src="./app.js"></script>
 </body>
 </html>
